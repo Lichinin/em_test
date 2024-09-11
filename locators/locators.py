@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+import os
 
 
 class Selectors:
@@ -18,3 +19,4 @@ class Selectors:
     POSTAL_CODE = (By.ID, 'postal-code')
     CONTINUE_BUTTON = (By.ID, 'continue')
     FINISH_BUTTON = (By.ID, 'finish')
+    ENDPOINT_REPOSITORIES = f'/{os.getenv("GIT_USER")}/repos'
