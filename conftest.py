@@ -1,7 +1,7 @@
 import datetime
-import os
 import logging
 import logging.handlers
+import os
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
@@ -13,7 +13,10 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
+from pages.products_page import ProductsPage
+
 load_dotenv()
+
 
 def pytest_addoption(parser):
     parser.addoption('--browser', action='store', default='firefox')
@@ -106,3 +109,12 @@ def browser(request, logger) -> WebDriver:
 
     yield driver
     driver.quit()
+
+
+@pytest.fixture()
+def login_as_user(browser) -> ProductsPage:
+    page = ProductsPage(browser)
+    page.fill_login_field()
+    page.fill_password_field()
+    page.click_login_button()
+    return page
