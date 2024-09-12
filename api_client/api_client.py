@@ -1,6 +1,8 @@
-import requests
-import os
 import json
+import os
+
+import allure
+import requests
 
 
 class ApiClient:
@@ -9,6 +11,7 @@ class ApiClient:
         self.repositories = []
         self.logger = logger
 
+    @allure.step('Получения списка репозиториев')
     def get_user_repositories(self):
         url = self.base_url + '/user/repos'
         headers = {
@@ -26,6 +29,7 @@ class ApiClient:
             self.logging.error(f"Failed to get user repositories (status code = {raw_repos_data.status_code})")
             raise Exception(f"Failed to get user repositories (status code = {raw_repos_data.status_code})")
 
+    @allure.step('Отправка запроса на создание репозитория')
     def create_repository(self, name):
         self.new_repository_name = name
         url = self.base_url + '/user/repos'
@@ -49,6 +53,7 @@ class ApiClient:
             self.logging.error(f'Cannot create repository {name}: {e}')
             raise Exception(f'Cannot create repository {name}: {e}')
 
+    @allure.step('Отправка запроса на удаление репозитория')
     def delete_repository(self, name):
         self.deleted_repository_name = name
         owner = os.getenv('GIT_USER')
@@ -64,6 +69,7 @@ class ApiClient:
             self.logging.error(f'Cannot delete repository {name}: {e}')
             raise Exception(f'Cannot delete repository {name}: {e}')
 
+    @allure.step('Проверка списка репозиториев')
     def assert_getting_repositories(self):
         try:
             assert len(self.repositories) > 0
@@ -72,6 +78,7 @@ class ApiClient:
             self.logging.error('!!! Test failed !!!')
             raise
 
+    @allure.step('Проверка наличия созданного репозитория в списке репозиториев')
     def assert_create_repository(self):
         try:
             self.get_user_repositories()
@@ -82,6 +89,7 @@ class ApiClient:
             self.logging.error('!!! Test failed !!!')
             raise
 
+    @allure.step('Проверка отсутсвия удаленного репозитория в списке репозиториев')
     def assert_delete_repository(self):
         try:
             self.get_user_repositories()

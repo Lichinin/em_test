@@ -13,8 +13,8 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from pages.products_page import ProductsPage
 from api_client.api_client import ApiClient
+from pages.products_page import ProductsPage
 
 load_dotenv()
 
@@ -42,11 +42,17 @@ def logger(request):
     logger.addHandler(file_handler)
     logger.setLevel(level=log_level)
 
-    logger.info('===> Test %s started at %s' % (request.node.name, datetime.datetime.now()))
+    logger.info(
+        '===> Test %s started at %s' %
+        (request.node.name, datetime.datetime.now())
+    )
 
     yield logger
 
-    logger.info('===> Test %s finished at %s' % (request.node.name, datetime.datetime.now()))
+    logger.info(
+        '===> Test %s finished at %s' %
+        (request.node.name, datetime.datetime.now())
+    )
 
     for handler in logger.handlers:
         handler.close()
