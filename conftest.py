@@ -14,6 +14,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from pages.products_page import ProductsPage
+from api_client.api_client import ApiClient
 
 load_dotenv()
 
@@ -118,3 +119,18 @@ def login_as_user(browser) -> ProductsPage:
     page.fill_password_field()
     page.click_login_button()
     return page
+
+
+@pytest.fixture()
+def create_test_repository(logger) -> ApiClient:
+    api_client = ApiClient('https://api.github.com', logger)
+    api_client.logger.info('* (SETUP) Create new repository for test"')
+    api_client.create_repository(name='my737373')
+
+
+@pytest.fixture()
+def delete_test_repository(logger) -> ApiClient:
+    yield
+    api_client = ApiClient('https://api.github.com', logger)
+    api_client.logger.info('* (TEARDOWN) Delete new repository for test"')
+    api_client.delete_repository(name='my737373')
