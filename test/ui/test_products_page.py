@@ -1,6 +1,7 @@
 import allure
 
 from pages.base_page import BasePage
+from pages.products_page import ProductsPage
 
 
 @allure.epic('EM test project')
@@ -75,8 +76,11 @@ def test_fill_user_data(login_as_user):
 @allure.epic('EM test project')
 @allure.suite('UI tests')
 @allure.title('Testcase #1. Покупка товара пользователем')
-def test_complete_purchase(login_as_user):
-    page = login_as_user
+def test_complete_purchase(browser):
+    page = ProductsPage(browser)
+    page.fill_login_field()
+    page.fill_password_field()
+    page.click_login_button()
     page.click_on_product_name()
     page.click_add_to_cart_button()
     page.click_shopping_cart_button()

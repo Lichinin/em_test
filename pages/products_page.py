@@ -3,7 +3,6 @@ import allure
 from locators.locators import Selectors
 from pages.base_page import BasePage
 
-
 class ProductsPage(BasePage):
 
     @allure.step('Выполняется клик по названию товара')
